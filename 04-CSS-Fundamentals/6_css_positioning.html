@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Positioning</title>
+  <style>
+    .container {
+      /* position: static; --- the default parameter */
+      background-color: crimson;
+      height: 1000px;
+      width: 100px;
+      padding: 10px;
+    }
+
+    .square {
+      position: fixed;
+      top: 5px;
+      /* right: 250px; */
+      left: 99px;
+      background-color: limegreen;
+      height: 50px;
+      width: 50px;
+    }
+
+    .blue {
+      background-color: blue;
+      height: 30px;
+      width: 30px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+    <div class="square"></div>
+    <div class="blue"></div>
+  </main>
+
+</body>
+</html>
