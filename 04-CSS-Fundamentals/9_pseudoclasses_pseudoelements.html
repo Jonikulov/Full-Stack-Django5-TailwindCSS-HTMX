@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Working with Typography in CSS</title>
+    <style>
+      main {
+        max-width: 500px;
+      }
+
+      p {
+        /* box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.2); */
+      }
+
+      a:hover {  /* this is a PseudoClass */
+        color: crimson;
+        font-weight: bold;
+      }
+
+      input {
+        color: white;
+        background-color: limegreen;
+      }
+
+      input:focus {
+        background-color: royalblue;
+      }
+
+      button {
+        margin-left: 25px;
+        padding: 8px 12px;
+        border: 1px solid #1c2023;
+        border-radius: 6px;
+        background-color: #50e3c2;
+        box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      button:hover {
+        cursor: pointer;
+        background-color: #a9f4e3;
+      }
+
+      button:active {
+        background-color: #ffffff;
+      }
+
+      p::first-letter {  /* this is a PseudoElement */
+        font-size: 1.5rem;
+      }
+
+      p::before {
+        content: "➡️";
+        margin-right: 2px;
+      }
+
+      p::after {
+
+      }
+    </style>
+  </head>
+
+
+  <body>
+    <main>
+      <h1>This is an article</h1>
+      <input type="text" name="" id="">
+      <button>Hello!</button>
+      <p>And this is its content.</p>
+      <p>Lorem ipsum dolor <a href="#">sit amet</a> consectetur adipisicing elit. Nostrum eveniet
+        repellendus veniam, voluptatibus adipisci repellat nulla debitis soluta
+        dolorum at aut corrupti iure architecto provident beatae enim quaerat
+        blanditiis mollitia, ex ipsum? Neque necessitatibus itaque facere
+        laudantium cumque ipsa dolore quos, voluptatem deleniti laborum sequi ex
+        fugit eaque animi ab numquam. Voluptates magni nesciunt praesentium
+        modi, reiciendis dolorem sed officia maxime? Error excepturi quos ab
+        dolorum impedit consectetur esse mollitia facere praesentium sint
+        suscipit, repellat necessitatibus commodi velit assumenda, quisquam
+        illum nesciunt est officiis eaque magnam quas. Mollitia labore a aut,
+        vel dolorem ad odit reprehenderit ex voluptate fugit? Quis quibusdam
+        doloremque dignissimos dicta. Officia dolore, cumque harum mollitia
+        quasi maxime eius laborum neque! Veritatis architecto quos doloribus
+        tempore ipsa temporibus, eligendi quas, reprehenderit maxime iusto
+        quaerat dolore ratione dicta recusandae et non nulla natus ipsum minima
+        molestiae mollitia unde, possimus voluptas nemo! Tempora ad nam non
+        libero. In quae dolores nulla numquam molestias doloribus reprehenderit,
+        maxime est alias ea voluptates magni vel? Illum pariatur temporibus,
+        fugiat repellendus ipsum doloremque voluptates vero quaerat ea
+        provident, eaque quasi, recusandae iusto fuga numquam tempora
+        dignissimos vel hic sed. Sapiente iusto corrupti totam natus maxime
+        temporibus fugiat ab nam quibusdam iure, sit incidunt repellat
+        consequuntur dolorem cumque illo omnis placeat eius illum similique ut
+        est amet doloremque. Fugiat architecto, dolor quia qui exercitationem
+        facilis ut repudiandae ex. At aspernatur ipsam earum debitis beatae!
+        Consectetur dolores veniam perspiciatis at eum fugit consequatur nemo
+        distinctio, adipisci eos rem dolorem, modi inventore eaque, ab minima
+        reprehenderit porro cumque commodi tenetur. Veritatis!
+      </p>
+    </main>
+  </body>
+</html>
