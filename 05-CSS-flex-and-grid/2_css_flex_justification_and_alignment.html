@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS flex justification & alignment</title>
+  <style>
+    .flex-container {
+      display: flex;
+      flex-direction: row;  /* OR column */
+      justify-content: space-evenly;  /* across main axis (x) -> row & x->column */
+      border: 1px solid darkblue;
+      height: 200px;
+      align-items: flex-end;  /* across cross axis (y) -> row & x->column */
+    }
+
+    .item {
+      background-color: crimson;
+      border: 1px solid black;
+    }
+
+    .top {
+      /* align-self: flex-start; */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="flex-container">
+    <div class="item">Item 1</div>
+    <div class="item top">Item 2</div>
+    <div class="item">Item 3</div>
+  </div>
+</body>
+</html>
