@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS flex child item properties</title>
+  <style>
+    .flex-container {
+      display: flex;
+      width: 500px;
+      height: 50px;
+      border: 2px solid black;
+    }
+    
+    .item-sm {
+      flex-basis: 200px;
+      background-color: crimson;
+      border: 2px solid limegreen;
+    }
+
+    .item-sm:nth-child(2) {
+      flex-shrink: 4;
+    }
+
+    .item-md {
+      /* flex-basis: 100px; */
+      background-color: crimson;
+      border: 2px solid limegreen;
+      flex-grow: 1;
+    }
+
+    .item-md:nth-child(2) {
+      flex-grow: 2;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="flex-container">
+    <div class="item-sm">1</div>
+    <div class="item-sm">2</div>
+    <div class="item-sm">3</div>
+  </div>
+  <hr>
+  <div class="flex-container">
+    <div class="item-md">1</div>
+    <div class="item-md">2</div>
+    <div class="item-md">3</div>
+  </div>
+
+</body>
+</html>
