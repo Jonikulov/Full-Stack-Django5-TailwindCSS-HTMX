@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS grid repeating & auto-fit</title>
+  <style>
+    .item {
+      background-color: crimson;
+      border: 1px solid black;
+    }
+
+    .grid-container-1 {
+      display: grid;
+      /* width: 500px; */
+      grid-template-columns: repeat(3, 100px);  /* 100px 100px 100px */
+      grid-template-rows: repeat(3, 50px);
+    }
+
+    .grid-container-2 {
+      display: grid;
+      width: 500px;
+      grid-template-columns: repeat(auto-fit, 100px);
+      grid-template-rows: repeat(3, 50px);
+    }
+
+    .grid-container-3 {
+      display: grid;
+      height: 400px;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      grid-template-rows: repeat(3, 50px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="grid-container-1">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+    <div class="item">6</div>
+    <div class="item">7</div>
+    <div class="item">8</div>
+    <div class="item">9</div>
+  </div>
+  <hr>
+  <div class="grid-container-2">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+    <div class="item">6</div>
+    <div class="item">7</div>
+    <div class="item">8</div>
+    <div class="item">9</div>
+  </div>
+  <hr>
+  <div class="grid-container-3">
+    <div class="item">1</div>
+    <div class="item">2</div>
+    <div class="item">3</div>
+    <div class="item">4</div>
+    <div class="item">5</div>
+    <div class="item">6</div>
+    <div class="item">7</div>
+    <div class="item">8</div>
+    <div class="item">9</div>
+  </div>
+
+</body>
+</html>

@@ -5,13 +5,45 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CSS grid template areas</title>
   <style>
-    .grid-container {}
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      grid-template-areas:
+        "header header"
+        "sidebar content"
+        "footer footer";
+      gap: 10px 40px;  /* row-gap: 10px; column-gap: 40px; */
+    }
+
+    .grid-container * {
+      background-color: crimson;
+      border: 1px solid black;
+    }
+
+    header {
+      grid-area: header;
+    }
+
+    nav {
+      grid-area: sidebar;
+    }
+
+    main {
+      grid-area: content;
+    }
+
+    footer {
+      grid-area: footer;
+    }
   </style>
 </head>
 
 <body>
   <div class="grid-container">
-    ?
+    <header>Header</header>
+    <nav>Sidebar</nav>
+    <main>Content</main>
+    <footer>Footer</footer>
   </div>  
 </body>
 </html>
