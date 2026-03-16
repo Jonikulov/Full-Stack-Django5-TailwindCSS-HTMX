@@ -81,6 +81,9 @@ DATABASES = {
     }
 }
 
+# Customize user model
+AUTH_USER_MODEL = "blog_app.UserProfile"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
