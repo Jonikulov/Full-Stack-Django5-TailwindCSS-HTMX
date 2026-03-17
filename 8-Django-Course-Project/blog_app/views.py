@@ -1,4 +1,8 @@
 from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+
+from blog_app.models import Article
 
 def home(request: HttpRequest) -> HttpResponse:
-    return HttpResponse("Hello, World! This is a Blog Projet in Django v6.")
+    articles = Article.objects.all()
+    return render(request, "blog_app/home.html", {"articles": articles})
