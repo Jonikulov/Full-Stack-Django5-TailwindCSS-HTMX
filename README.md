@@ -14,6 +14,7 @@ Full Stack Web Development with Django 5, TailwindCSS, HTMX
 * Access the admin panel: `/admin` (http://127.0.0.1:8000/admin)
 * Create django app: **`$ uv run manage.py startapp <appname>`**
 * Create migrations (for db): **`$ uv run manage.py makemigrations`**
+* Django automatically escapes the HTML content, we can turn it off in templates using `{{ content | safe }}`.
 *
 ---
 * **Browser Cookie** (a.k.a. HTTP cookie) -- a small block of data created by a web server while a user is browsing a website and placed on the user's computer or other device by the user's web browser. \
