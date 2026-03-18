@@ -1,5 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from blog_app.models import Article
 from blog_app.forms import CreateArticleForm
@@ -9,6 +11,7 @@ def home(request: HttpRequest) -> HttpResponse:
     return render(request, "blog_app/home.html", {"articles": articles})
 
 
+# function based view
 def create_article(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         form = CreateArticleForm(data=request.POST)
@@ -26,3 +29,11 @@ def create_article(request: HttpRequest) -> HttpResponse:
     else:
         form = CreateArticleForm()
     return render(request, "blog_app/article_create.html", {"form": form})
+
+
+# class based view
+class ArticleCreateView(CreateView):
+    template_name = "blog_app/article_create.html"
+    model = Article
+    fields = ["title", "status", "content", "word_count", "twitter_post"]
+    success_url = reverse_lazy("home")
