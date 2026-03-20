@@ -26,7 +26,7 @@ def create_article(request: HttpRequest) -> HttpResponse:
                 title = form_data["title"],
                 status = form_data["status"],
                 content = form_data["content"],
-                word_count = form_data["word_count"],
+                # word_count = form_data["word_count"],
                 twitter_post = form_data["twitter_post"],
             )
             new_article.save()
@@ -46,14 +46,14 @@ class ArticlesListView(ListView):
 class ArticleCreateView(CreateView):
     template_name = "blog_app/article_create.html"
     model = Article
-    fields = ["title", "status", "content", "word_count", "twitter_post"]
+    fields = ["title", "status", "content", "twitter_post"]
     success_url = reverse_lazy("home")
 
 
 class ArticleUpdateView(UpdateView):
     template_name = "blog_app/article_update.html"
     model = Article
-    fields = ["title", "status", "content", "word_count", "twitter_post"]
+    fields = ["title", "status", "content", "twitter_post"]
     success_url = reverse_lazy("home")
     context_object_name = "article"
 
@@ -61,6 +61,6 @@ class ArticleUpdateView(UpdateView):
 class ArticleDeleteView(DeleteView):
     template_name = "blog_app/article_delete.html"
     model = Article
-    fields = ["title", "status", "content", "word_count", "twitter_post"]
+    fields = ["title", "status", "content", "twitter_post"]
     success_url = reverse_lazy("home")
     context_object_name = "article"
