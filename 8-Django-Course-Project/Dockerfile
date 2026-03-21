@@ -5,12 +5,12 @@ ENV PYTHONUNBUFFERED=1
 # ENV UV_PYTHON_PREFERENCE=only-system
 # # Forbid uv from ever downloading Python at runtime
 # ENV UV_PYTHON_DOWNLOADS=never
-# # Put the virtual environment in /opt/venv instead of /code/.venv
-# ENV UV_PROJECT_ENVIRONMENT=/opt/venv
+# Put the virtual environment in /opt/venv instead of /code/.venv
+ENV UV_PROJECT_ENVIRONMENT=/opt/venv
 
 # Set recommended uv environment variables for Docker
 ENV UV_COMPILE_BYTECODE=1
-# # Tell uv to copy files instead of using hardlinks (better for Docker layers)
+# Tell uv to copy files instead of using hardlinks (better for Docker layers)
 ENV UV_LINK_MODE=copy 
 
 # Install uv using the official multi-stage build method
