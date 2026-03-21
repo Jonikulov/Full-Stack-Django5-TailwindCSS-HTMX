@@ -1,0 +1,10 @@
+# Prevent local environments from corrupting the container
+.venv/
+.python-version
+
+# Standard Python exclusions
+__pycache__/
+*.pyc
+*.sqlite3
+
+.git/
