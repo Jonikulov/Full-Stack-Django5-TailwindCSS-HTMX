@@ -51,6 +51,19 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ["debug_toolbar"]
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+    import re, socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    docker_ips = [re.sub(r"\.\d+$", ".1", ip) for ip in ips]
+    INTERNAL_IPS = ["127.0.0.1"] + docker_ips
+
+    # DEBUG_TOOLBAR_CONFIG = {
+    #     "SHOW_TOOLBAR_CALLBACK": lambda request: print(request.META),
+    # }
+
 ROOT_URLCONF = 'django_blog_project.urls'
 
 TEMPLATES = [

@@ -29,6 +29,7 @@ Full Stack Web Development with Django 5, TailwindCSS, HTMX
 * Access the admin panel: `/admin` (http://127.0.0.1:8000/admin)
 * Create django app: **`$ uv run manage.py startapp <appname>`**
 * Create migrations (for db): **`$ uv run manage.py makemigrations`**
+* Create custom migration: **`$ uv run manage.py makemigrations --empty <appname>`**
 * Django automatically escapes the HTML content, we can turn it off in templates using `{{ content | safe }}`.
 *
 ---

@@ -20,9 +20,13 @@ RUN mkdir /code
 WORKDIR /code
 COPY pyproject.toml uv.lock ./
 # Install dependencies without the project itself 
-RUN uv sync --frozen --no-install-project
+RUN uv sync --frozen --no-install-project --no-default-groups
 # Copy the rest of your application code
 COPY . .
+
+# # Add the virtual environment to the system PATH
+# # This eliminates the need to use `uv run` or activate the venv
+# ENV PATH="/opt/venv/bin:$PATH"
 
 EXPOSE 8000
 # Run the application using uv run
