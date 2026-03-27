@@ -17,8 +17,20 @@ ARTICLE_STATUSES = (
 class UserProfile(AbstractUser):
     email = models.EmailField(_("email address"), max_length=255, unique=True)
     objects = UserProfileManager()
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+    # my_user.article_count -> accessing attribute like functionality but
+    # actually performing this function
+    @property
+    def article_count(self):
+        return self.articles.count()
+    
+    @property
+    def written_words(self):
+        return self.articles.aggregate(models.Sum("word_count")) \
+            ["word_count__sum"] or 0
 
 
 class Article(models.Model):
