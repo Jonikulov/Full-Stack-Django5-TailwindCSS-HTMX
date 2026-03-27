@@ -14,7 +14,12 @@ Full Stack Web Development with Django 5, TailwindCSS, HTMX
     1. `docker build -t djangoblog .`
     2. `docker run --rm -p 8005:8000 --name djangoblog djangoblog`
         * Run Docker Container with Volumes: `docker run --rm -p 8005:8000 --name djangoblog -v "$(pwd):/code" djangoblog`
-    3. `docker exec djangoblog uv run manage.py migrate`
+    3. `docker exec djangoblog uv run manage.py makemigrations`
+        * `docker exec djangoblog uv run manage.py migrate`
+
+- Adding translations:
+    - `$ docker exec djangoblog uv run manage.py makemessages  --locale=uz `
+    - `$ docker exec djangoblog uv run manage.py compilemessages`
 
 ---
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
@@ -35,6 +36,27 @@ def create_article(request: HttpRequest) -> HttpResponse:
     else:
         form = CreateArticleForm()
     return render(request, "blog_app/article_create.html", {"form": form})
+
+
+# -----------------------------------------------------------------------------
+# function based view
+@login_required  # This replaces the 'LoginRequiredMixin'
+def create_article(request: HttpRequest) -> HttpResponse:
+    # 1. Initialize the form (handles both GET and POST)
+    form = CreateArticleForm(data=request.POST or None)
+
+    # 2. Logic for saving
+    if request.method == "POST" and form.is_valid():
+        # Using .save() is cleaner than manual dictionary access, but it works
+        # only for ModelForm -- `CreateArticleForm(forms.ModelForm)`
+        article = form.save(commit=False)
+        article.creator = request.user 
+        article.save()
+        return redirect("home")
+
+    # 3. Render the page
+    return render(request, "blog_app/article_create.html", {"form": form})
+# -----------------------------------------------------------------------------
 
 
 class ArticlesListView(LoginRequiredMixin, ListView):

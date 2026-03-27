@@ -1,6 +1,9 @@
 FROM python:3.13-slim
 ENV PYTHONUNBUFFERED=1
 
+RUN apt update
+RUN apt install gettext -y
+
 # # Tell uv to use the container's native Python and stop downloading
 # ENV UV_PYTHON_PREFERENCE=only-system
 # # Forbid uv from ever downloading Python at runtime
