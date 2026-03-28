@@ -20,7 +20,8 @@ Full Stack Web Development with Django 5, TailwindCSS, HTMX
 - Adding translations:
     - `$ docker exec djangoblog uv run manage.py makemessages  --locale=uz `
     - `$ docker exec djangoblog uv run manage.py compilemessages`
-
+- Docker compose commands:
+    - Completely recreate the docker image: `docker compose up --build --force-recreate --no-deps <service_name>`
 ---
 
 ## Django Course Notes:

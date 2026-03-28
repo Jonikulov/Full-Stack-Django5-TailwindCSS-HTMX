@@ -31,6 +31,8 @@ COPY . .
 # # This eliminates the need to use `uv run` or activate the venv
 # ENV PATH="/opt/venv/bin:$PATH"
 
+RUN chmod 755 /code/start-django.sh
+
 EXPOSE 8000
 # Run the application using uv run
-ENTRYPOINT [ "uv", "run", "manage.py", "runserver", "0.0.0.0:8000" ]
+ENTRYPOINT [ "/code/start-django.sh" ]
