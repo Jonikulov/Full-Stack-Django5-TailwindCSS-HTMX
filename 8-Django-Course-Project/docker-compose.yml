@@ -3,7 +3,7 @@ services:
   db:
     image: postgres:18
     env_file:
-      - ./.env.docker
+      - ./.env
     volumes:
       - postgres_data:/var/lib/postgresql
     healthcheck:
@@ -22,7 +22,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - ./.env.docker
+      - ./.env
     restart: unless-stopped
     depends_on:
       db:

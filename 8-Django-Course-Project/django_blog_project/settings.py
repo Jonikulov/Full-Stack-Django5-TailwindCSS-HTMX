@@ -12,22 +12,31 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 
-import dj_database_url
+import environ
 
 # Build paths inside the project like this: BASE_DIR / "subdir".
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False),
+    ALLOWED_HOSTS=(list, []),
+    CONN_MAX_AGE=(int, 0),
+    CONN_HEALTH_CHECKS=(bool, True),
+)
+# Take environment variables from .env file
+environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-525))3yb4!nm)8l#r32k)dc_v3courq^&6^zz4e2ba)x8tg*ct"
+SECRET_KEY = env("SECRET_KEY")
 
-# SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 AUTHENTICATION_BACKENDS = [
     # # Needed to login by username in Django admin, regardless of `allauth`
@@ -111,27 +120,36 @@ WSGI_APPLICATION = "django_blog_project.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": dj_database_url.config(conn_max_age=600)
+    "default": env.db("DATABASE_URL", default="sqlite:///db.sqlite3")
 }
+DATABASES["default"]["CONN_MAX_AGE"] = env("CONN_MAX_AGE")
+DATABASES["default"]["CONN_HEALTH_CHECKS"] = env("CONN_HEALTH_CHECKS")
 
 # Customize user model
 AUTH_USER_MODEL = "blog_app.UserProfile"
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
+        # Checks the similarity between the password and a set of attributes of the user
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTIONS": {
+            "user_attributes": ("username", "email", "first_name", "last_name"),
+            "max_similarity": 0.7,
+        }
     },
     {
+        # Checks whether the password meets a minimum length
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
+        # Checks whether the password occurs in a list of common passwords
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
+        # Checks whether the password isn’t entirely numeric
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
@@ -163,7 +181,6 @@ USE_TZ = True
 LOCALE_PATHS = [
     BASE_DIR / "locale"
 ]
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
