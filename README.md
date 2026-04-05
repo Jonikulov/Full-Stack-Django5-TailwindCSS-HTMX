@@ -40,6 +40,15 @@ Full Stack Web Development with Django 5, TailwindCSS, HTMX
 * Django has built-in command `check --deploy` for security checks: **`uv run manage.py check --deploy`**
 *
 ---
+
+<details>
+<summary>
+<h4>Difference between <code>&lt;strong&gt;</code> vs <code>&lt;b&gt;</code>, <code>&lt;em&gt;</code> vs <code>&lt;i&gt;</code>?</h4>
+</summary>
+
+* `<b>` is just for styling (making it bold), `<strong>` for also style AND meant for that the content is particularly important in the page.
+</details>
+
 * **Browser Cookie** (a.k.a. HTTP cookie) -- a small block of data created by a web server while a user is browsing a website and placed on the user's computer or other device by the user's web browser. \
 https://en.wikipedia.org/wiki/HTTP_cookie
 * **CSRF** (Cross-Site Request Forgery / **XSRF**) is an attack that forces an end user to execute unwanted actions on a web application in which they’re currently authenticated. \
