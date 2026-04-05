@@ -1,0 +1,35 @@
+name: django-blog-project-local
+version: '3.0.2'
+
+services:
+  db:
+    image: postgres:18
+    restart: always
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      interval: 2s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+  web:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: ghcr.io/yourusername/yourrepo:latest
+    init: true
+    volumes:
+      - .:/code
+    env_file:
+      - ./.env
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+volumes:
+  postgres_data:

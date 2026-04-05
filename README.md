@@ -37,6 +37,7 @@ Full Stack Web Development with Django 5, TailwindCSS, HTMX
 * Create migrations (for db): **`$ uv run manage.py makemigrations`**
 * Create custom migration: **`$ uv run manage.py makemigrations --empty <appname>`**
 * Django automatically escapes the HTML content, we can turn it off in templates using `{{ content | safe }}`.
+* Django has built-in command `check --deploy` for security checks: **`uv run manage.py check --deploy`**
 *
 ---
 * **Browser Cookie** (a.k.a. HTTP cookie) -- a small block of data created by a web server while a user is browsing a website and placed on the user's computer or other device by the user's web browser. \

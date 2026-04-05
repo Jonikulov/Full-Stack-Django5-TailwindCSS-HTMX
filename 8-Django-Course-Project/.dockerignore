@@ -1,10 +1,20 @@
-# Prevent local environments from corrupting the container
-.venv/
-.python-version
+# Version Control
+.git
+.gitignore
 
-# Standard Python exclusions
-__pycache__/
+# Python Cache
+__pycache__
 *.pyc
+*.pyd
+*.pyo
+
+# Virtual Environments
+*.env
+.venv
+env/
+venv/
+# .python-version
+
 *.sqlite3
 
-.git/
+# Dev Tools
