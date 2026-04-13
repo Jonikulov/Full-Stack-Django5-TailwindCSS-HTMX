@@ -2,6 +2,7 @@ name: django-blog-project-local
 version: '3.0.2'
 
 services:
+
   db:
     image: postgres:18
     restart: always
@@ -11,10 +12,11 @@ services:
       - postgres_data:/var/lib/postgresql
     healthcheck:
       test: pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
-      interval: 2s
-      timeout: 10s
+      interval: 5s
+      timeout: 7s
       retries: 5
-      start_period: 30s
+      start_period: 10s
+
   web:
     # build:
     #   context: .
@@ -31,5 +33,16 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # develop:  # --watch mode -> development feature
+    #   watch:
+    #     - action: sync+restart
+    #       path: .
+    #       target: /code
+    #       ignore:
+    #         - requirements.txt
+    #     - action: rebuild
+    #       path: requirements.txt
+
+
 volumes:
   postgres_data:
