@@ -25,7 +25,7 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 # # Create a non-root user with a fixed ID
 # RUN groupadd -g 1000 django && useradd -u 1000 -g django -m django
 
-# Copy the production-only venv from the base (stage) — no dev dependencies included.
+# Copy the production-only venv from the base (stage) — no dev dependencies included
 COPY --from=base --chown=appuser:appuser /app/venv ./venv
 # Copy source & scripts from the test (stage)
 COPY --from=test --chown=appuser:appuser /app/src ./src
@@ -42,6 +42,6 @@ USER appuser
 EXPOSE 8000
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-# # CMD is the "default argument" passed to the entrypoint. 
+# # CMD is the "default argument" passed to the entrypoint
 # # We can easily override this in CI/CD
 # CMD ["gunicorn", "src.myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
