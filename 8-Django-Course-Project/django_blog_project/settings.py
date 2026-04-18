@@ -123,7 +123,7 @@ DATABASES = {
     "default": env.db("DATABASE_URL", default="sqlite:///db.sqlite3")
 }
 DATABASES["default"]["CONN_MAX_AGE"] = env("CONN_MAX_AGE")
-DATABASES["default"]["CONN_HEALTH_CHECKS"] = env("CONN_HEALTH_CHECKS")
+# DATABASES["default"]["CONN_HEALTH_CHECKS"] = env("CONN_HEALTH_CHECKS")
 
 # Customize user model
 AUTH_USER_MODEL = "blog_app.UserProfile"

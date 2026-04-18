@@ -1,4 +1,4 @@
-# ---- Stage 1: Build ----
+# --------------- Stage 1: Build ---------------
 # Install only production dependencies into a virtual environment.
 FROM python:3.13-slim@sha256:<digest> AS base
 WORKDIR /app
@@ -8,7 +8,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-# ---- Stage 2: Test ----
+# --------------- Stage 2: Test ---------------
 # Extend the base stage with dev dependencies and run tests.
 FROM base AS test
 COPY requirements-dev.txt .
@@ -17,7 +17,7 @@ COPY . .
 RUN python -m pytest tests/ -v
 
 
-# ---- Stage 3: Production ----
+# --------------- Stage 3: Production ---------------
 FROM python:3.13-slim@sha256:<digest> AS production
 WORKDIR /app
 # Create a dedicated system user

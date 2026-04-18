@@ -33,15 +33,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # develop:  # --watch mode -> development feature
-    #   watch:
-    #     - action: sync+restart
-    #       path: .
-    #       target: /code
-    #       ignore:
-    #         - requirements.txt
-    #     - action: rebuild
-    #       path: requirements.txt
+    develop:  # --watch mode -> development feature
+      watch:
+        - action: sync+restart
+          path: .
+          target: /code
+          ignore:
+            - requirements.txt
+        - action: rebuild
+          path: requirements.txt
 
 
 volumes:
