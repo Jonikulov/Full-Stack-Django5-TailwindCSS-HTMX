@@ -2,8 +2,8 @@
 FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim
 
 # Setup a non-root user
-RUN groupadd --system --gid 999 app_user \
-   && useradd --system --gid 999 --uid 999 --create-home app_user
+RUN groupadd --system --gid 999 web_app \
+   && useradd --system --gid 999 --uid 999 --create-home web_app
 
 # Install the project into `/app`
 WORKDIR /app
@@ -12,8 +12,8 @@ WORKDIR /app
 ENV UV_COMPILE_BYTECODE=1
 # Copy from the cache instead of linking since it's a mounted volume
 ENV UV_LINK_MODE=copy
-# Omit development dependencies
-ENV UV_NO_DEV=1
+# # Omit development dependencies
+# ENV UV_NO_DEV=1
 
 # # Ensure installed tools can be executed out of the box
 # ENV UV_TOOL_BIN_DIR=/usr/local/bin
@@ -22,24 +22,24 @@ ENV UV_NO_DEV=1
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
-    uv sync --locked --no-install-project
+    uv sync --locked --no-install-project --no-default-groups
 
 # Then, add the rest of the project source code and install it
 # Installing separately from its dependencies allows optimal layer caching
 COPY . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
-    uv sync --locked
+    uv sync --locked --no-default-groups
 
 # Place executables in the environment at the front of the path
 ENV PATH="/app/.venv/bin:$PATH"
+
+# Use the non-root user to run our application
+USER web_app
 
 # Reset the entrypoint, don't invoke `uv`
 ENTRYPOINT []
 # # OR
 # ENTRYPOINT ["fastapi", "run", "--host", "0.0.0.0", "src/my_app"]
- 
-# Use the non-root user to run our application
-USER app_user
 
 # Run the FastAPI application by default
 # Uses `uv run` to sync dependencies on startup, respecting UV_NO_DEV
