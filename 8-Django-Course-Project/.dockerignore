@@ -13,7 +13,7 @@ __pycache__
 .venv
 env/
 venv/
-# .python-version
+.python-version
 
 *.sqlite3
 

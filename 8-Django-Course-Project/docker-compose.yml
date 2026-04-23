@@ -1,7 +1,7 @@
-name: django-blog-project-local
+name: django-blog-project
 services:
   db:
-    image: postgres:18
+    image: postgres:18-trixie
     env_file:
       - ./.env
     volumes:
@@ -17,12 +17,15 @@ services:
       context: .
       dockerfile: Dockerfile
     init: true
-    volumes:
-      - .:/code
     ports:
       - "8000:8000"
     env_file:
       - ./.env
+    environment:
+      - DEBUG=True  # Overrides the .env for local dev
+    volumes:  # Development mode only
+      - .:/app  # Sync code for live-reloading
+      - /app/.venv  # Protect container venv
     restart: unless-stopped
     depends_on:
       db:
