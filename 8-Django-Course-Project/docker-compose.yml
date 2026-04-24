@@ -16,13 +16,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: django_blog_web
     init: true
     ports:
       - "8000:8000"
     env_file:
       - ./.env
-    environment:
-      - DEBUG=True  # Overrides the .env for local dev
+    environment:  # Overrides the .env for local dev
+      - DEBUG=True
     volumes:  # Development mode only
       - .:/app  # Sync code for live-reloading
       - /app/.venv  # Protect container venv

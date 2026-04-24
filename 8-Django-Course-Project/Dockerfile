@@ -18,15 +18,15 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
 
 WORKDIR /app
 
-COPY pyproject.toml uv.lock ./
-# Install dependencies without the project itself 
+# Install dependencies without the project itself
 RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    --mount=type=bind,source=uv.lock,target=uv.lock \
     # uv sync --locked --no-default-groups --no-install-project
     uv sync --locked --no-install-project
 
-# Copy the rest of the code
+# Copy the rest of the project & sync & install them
 COPY . /app
-# Sync the project
 RUN --mount=type=cache,target=/root/.cache/uv \
     # uv sync --locked --no-default-groups
     uv sync --locked
