@@ -27,6 +27,7 @@ services:
     volumes:  # Development mode only
       - .:/app  # Sync code for live-reloading
       - /app/.venv  # Protect container venv
+      - /app/staticfiles
     restart: unless-stopped
     depends_on:
       db:

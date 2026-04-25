@@ -41,6 +41,11 @@ RUN groupadd --system --gid 999 django \
 USER django
 
 EXPOSE 8000
-ENTRYPOINT [ "/app/start-django.sh" ]
+ENTRYPOINT ["/app/entrypoint.sh"]
 # # Use the venv's python directly via the PATH we set
-# CMD ["python", "manage.py", "runserver", "8000"]
+CMD ["python", "manage.py", "runserver", "8000"]
+    # CMD ["gunicorn", "src.myproject.wsgi:application", \
+    #     "--bind", "0.0.0.0:8000", \
+    #     "--workers", "4", \
+    #     "--access-logfile", "-", \
+    #     "--error-logfile", "-"]

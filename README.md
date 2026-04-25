@@ -1,4 +1,10 @@
 # Full-Stack-Django5-TailwindCSS-HTMX
+
+### TODO & TASKS:
+* [ ] DEBUG=False mode isn't showing/working properly for staticfiles (e.g. admin page): need to be added `WhiteNoise` OR `Nginx / CDN`.
+* [ ]
+---
+
 Full Stack Web Development with Django 5, TailwindCSS, HTMX
 
 * NOTE: although the course taught `django v5`, this repo used `django v6.0.3`, look for `pyproject.toml` for more about packages & dependencies.

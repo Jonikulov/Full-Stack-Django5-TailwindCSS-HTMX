@@ -50,12 +50,15 @@ RUN groupadd --system --gid 999 django && \
 COPY --from=builder --chown=django:django /app /app
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PATH="/app/.venv/bin:$PATH"
 
-# Ensure script is executable
-RUN chmod +x /app/start-django.sh
+# Create directories & ensure scripts are executable
+RUN mkdir -p /app/staticfiles && \
+    chown -R django:django /app/staticfiles && \
+    chmod -R 755 /app/staticfiles && \
+    chmod +x /app/setup-django.sh
 
 WORKDIR /app
 USER django
 
 EXPOSE 8000
-ENTRYPOINT [ "/app/start-django.sh" ]
-# CMD ["python", "manage.py", "runserver", "8000"]
+ENTRYPOINT [ "/app/setup-django.sh" ]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

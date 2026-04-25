@@ -40,8 +40,12 @@ ENV PYTHONUNBUFFERED=1
 # Switch to the non-root (secure) user
 USER appuser
 EXPOSE 8000
-ENTRYPOINT ["/app/entrypoint.sh"]
 
-# # CMD is the "default argument" passed to the entrypoint
-# # We can easily override this in CI/CD
-# CMD ["gunicorn", "src.myproject.wsgi:application", "--bind", "0.0.0.0:8000"]
+ENTRYPOINT ["/app/entrypoint.sh"]
+# CMD is the "default argument" passed to the entrypoint
+# We can easily override this in CI/CD
+CMD ["gunicorn", "src.myproject.wsgi:application", \
+    "--bind", "0.0.0.0:8000", \
+    "--workers", "4", \
+    "--access-logfile", "-", \
+    "--error-logfile", "-"]

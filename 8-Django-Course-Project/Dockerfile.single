@@ -35,7 +35,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Ensure script is executable
-RUN chmod +x /app/start-django.sh
+RUN chmod +x /app/setup-django.sh
 
 # Setup a non-root user
 RUN groupadd --system --gid 999 django \
@@ -43,5 +43,5 @@ RUN groupadd --system --gid 999 django \
 USER django
 
 EXPOSE 8000
-ENTRYPOINT [ "/app/start-django.sh" ]
-# CMD ["python", "manage.py", "runserver", "8000"]
+ENTRYPOINT [ "/app/setup-django.sh" ]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
