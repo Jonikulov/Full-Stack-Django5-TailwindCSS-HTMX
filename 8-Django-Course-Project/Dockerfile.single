@@ -1,10 +1,8 @@
-# --------------- Stage 1: Build ---------------
-FROM python:3.13-slim-trixie AS builder
+FROM python:3.13-slim-trixie
 
 # System deps
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gettext && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gettext && rm -rf /var/lib/apt/lists/*
 # Install uv binary
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
@@ -19,6 +17,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     UV_LINK_MODE=copy
 
 WORKDIR /app
+
 # Install dependencies without the project itself
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
@@ -32,28 +31,15 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     # uv sync --locked --no-default-groups
     uv sync --locked
 
-
-# --------------- Stage 2: Production ---------------
-FROM python:3.13-slim-trixie AS final
-
-# System deps & delete everything not needed
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gettext && \
-    # apt-get purge --auto-remove -y wget curl telnet netcat-openbsd && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f /bin/su /usr/bin/passwd   # remove escalation tools
-
-# Setup a non-root user
-RUN groupadd --system --gid 999 django && \
-    useradd --system --gid 999 --uid 999 --create-home django
-
-COPY --from=builder --chown=django:django /app /app
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PATH="/app/.venv/bin:$PATH"
+# Place the venv at the front of the path
+ENV PATH="/app/.venv/bin:$PATH"
 
 # Ensure script is executable
 RUN chmod +x /app/start-django.sh
 
-WORKDIR /app
+# Setup a non-root user
+RUN groupadd --system --gid 999 django \
+    && useradd --system --gid 999 --uid 999 --create-home django
 USER django
 
 EXPOSE 8000

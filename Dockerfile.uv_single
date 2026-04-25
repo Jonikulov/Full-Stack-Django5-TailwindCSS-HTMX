@@ -41,6 +41,6 @@ RUN groupadd --system --gid 999 django \
 USER django
 
 EXPOSE 8000
-# Use the venv's python directly via the PATH we set
 ENTRYPOINT [ "/app/start-django.sh" ]
+# # Use the venv's python directly via the PATH we set
 # CMD ["python", "manage.py", "runserver", "8000"]
