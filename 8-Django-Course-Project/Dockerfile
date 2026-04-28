@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends gettext && \
     rm -rf /var/lib/apt/lists/*
 # Install uv binary
-COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /bin/
 
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \
     # Set uv to use the container's native Python and stop downloading
