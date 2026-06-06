@@ -5,7 +5,8 @@ import functools
 user = {"username": "john", "access_level": "admin"}
 
 def make_secure(func):
-    @functools.wraps(func)  # Standard practice: preserves introspection (name, docstrings, ...) of the wrapped function
+    # Standard practice: preserves introspection (name, docstrings, ...) of the wrapped function
+    @functools.wraps(func)
     def secure_function(*args, **kwargs):
         if user["access_level"] == "admin":
             return func(*args, **kwargs)
