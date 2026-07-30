@@ -1,0 +1,78 @@
+name: django-blog-project
+
+# ----------------------------------------
+# SHARED SERVICES (Always run)
+# ----------------------------------------
+services:
+  db:
+    image: postgres:18-trixie
+    env_file:
+      - ./.env
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}
+      interval: 2s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+# ----------------------------------------
+# DEVELOPMENT ENVIRONMENT
+# ----------------------------------------
+  web-dev:
+    profiles: ["dev"]       # 👈 Only runs when the 'dev' profile is active
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: django_blog_web:dev
+    init: true
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    environment:
+      - DEBUG=True
+    # Overrides the Dockerfile CMD to use the dev server
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - .venv/
+            - __pycache__/
+        - action: rebuild
+          path: ./pyproject.toml
+        - action: rebuild
+          path: ./uv.lock
+    depends_on:
+      db:
+        condition: service_healthy
+
+# ----------------------------------------
+# PRODUCTION ENVIRONMENT
+# ----------------------------------------
+  web-prod:
+    profiles: ["prod"]      # 👈 Only runs when the 'prod' profile is active
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: django_blog_web:prod
+    init: true
+    ports:
+      - "80:8000"           # Maps to standard HTTP port 80 externally
+    env_file:
+      - ./.env.prod         # Use a separate env file for production secrets
+    environment:
+      - DEBUG=False
+    restart: always
+    # Overrides the Dockerfile CMD to use a production server (like Gunicorn)
+    command: ["gunicorn", "django_blog_project.wsgi:application", "--bind", "0.0.0.0:8000"]
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

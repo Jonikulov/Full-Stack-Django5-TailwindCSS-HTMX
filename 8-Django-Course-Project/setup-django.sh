@@ -10,9 +10,9 @@ set -e
 echo "Running migrations..."
 python manage.py migrate --noinput
 
-# Collect static files
-echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear
+# # Collect static files
+# echo "Collecting static files..."
+# python manage.py collectstatic --noinput --clear
 
 # Start the actual web server
 echo "Starting web server..."

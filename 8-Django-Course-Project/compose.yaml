@@ -22,21 +22,23 @@ services:
       - "8000:8000"
     env_file:
       - ./.env
-    environment:  # Overrides the .env for local dev
-      - DEBUG=True
-    develop:  # development mode only
-      watch:
-        - action: sync
-          path: .
-          target: /app
-          # ignore:
-          #   - .venv/
-          #   - staticfiles/
-        - action: rebuild
-          path: ./pyproject.toml
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
+
+    develop:  # development mode only
+      watch:
+        # Sync code changes instantly
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - .venv/
+            - __pycache__/
+        # Full container rebuild only a new package added
+        - action: rebuild
+          path: pyproject.toml
+
 volumes:
   postgres_data:

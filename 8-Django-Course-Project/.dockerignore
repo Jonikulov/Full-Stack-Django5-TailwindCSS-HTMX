@@ -16,6 +16,6 @@ venv/
 .python-version
 
 *.sqlite3
-staticfiles/
+# staticfiles/
 
 # Dev Tools
