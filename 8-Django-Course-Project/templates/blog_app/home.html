@@ -30,7 +30,7 @@
             {{ article.title }}
             <span class="ml-2 px-4 py-0.5 text-xs rounded-sm uppercase bg-gray-200">{{ article.status }}</span>
         </a>
-        <p class="">{{ article.word_count }} word{{  article.word_count | pluralize }}</p>
+        <p class="mb-4">{{ article.word_count }} word{{  article.word_count | pluralize }}</p>
       </li>
     {% endfor %}
     </ul>

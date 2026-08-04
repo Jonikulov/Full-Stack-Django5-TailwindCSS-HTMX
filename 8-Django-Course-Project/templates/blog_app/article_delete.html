@@ -6,7 +6,7 @@
   <p class="text-lg mb-6">Are you sure you want to delete "{{ article.title }}"?</p>
   <form method="POST" class="flex items-center gap-4">
     {% csrf_token %}
-    <button type="submit" class="button danger">Yes, delete it</button>
+    <button type="submit" class="button danger cursor-pointer">Yes, delete it</button>
     <a
       href="{% url 'home' %}"
       class="button secondary">

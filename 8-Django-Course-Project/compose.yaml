@@ -20,6 +20,9 @@ services:
     init: true
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/.venv  # anonymous volume: keeps the container's own venv, not your host's
     env_file:
       - ./.env
     restart: unless-stopped
