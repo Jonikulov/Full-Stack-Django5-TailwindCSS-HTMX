@@ -197,3 +197,13 @@ STATICFILES_DIRS = [
 # Security settings
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# AllAuth Social Account Settings
+SOCIALACCOUNT_PROVIDERS = {
+    "github": {
+        "APP": {
+            "client_id": env("GITHUB_CLIENT_ID", default=""),
+            "secret": env("GITHUB_CLIENT_SECRET", default=""),
+        }
+    }
+}

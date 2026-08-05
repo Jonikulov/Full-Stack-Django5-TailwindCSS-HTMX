@@ -12,12 +12,14 @@
       <p class="text-sm mt-1">Or <a href="{{ signup_url }}" class="font-bold hover:underline">sign up instead</a>?</p>
     </div>
 
-    <form action="POST" class="space-y-8 my-5">
+    <form method="POST" action="{% url 'account_login' %}" class="space-y-8 my-5">
       {% csrf_token %}
       {% if form.errors %}
         {% for field, errors in form.errors.items %}
           {% for error in errors %}
-            <div>{{ error }}</div>
+            <div class="p-2 my-2 text-sm text-red-700 bg-red-50 rounded-md border border-red-300">
+              {{ error }}
+            </div>
           {% endfor %}
         {% endfor %}
       {% endif %}
