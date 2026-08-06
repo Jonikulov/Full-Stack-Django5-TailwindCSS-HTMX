@@ -1,7 +1,9 @@
-{% extends "blog_app/base.html" %}
+{% extends "base.html" %}
 {% load humanize %}
 
-{% block content %}
+{% block head_title %}- Your articles{% endblock head_title %}
+
+{% block base_content %}
 
 <main class="max-w-7xl mx-auto mt-10 p-2 md:p-4 lg:p-10">
 
@@ -38,4 +40,4 @@
     <p>You have no articles yet.</p>
   {% endif %}
   </main>
-{% endblock content %}
+{% endblock base_content %}

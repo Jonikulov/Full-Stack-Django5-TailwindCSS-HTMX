@@ -3,10 +3,10 @@ from django.urls import path
 from blog_app.views import (
     # home,
     # create_article,
-    ArticlesListView,
     ArticleCreateView,
+    ArticleDeleteView,
+    ArticlesListView,
     ArticleUpdateView,
-    ArticleDeleteView
 )
 
 urlpatterns = [

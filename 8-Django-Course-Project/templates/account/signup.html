@@ -1,10 +1,11 @@
-{% extends "blog_app/base.html" %}
+{% extends "base.html" %}
 
 {% load widget_tweaks %}
 {% load allauth %}
 
+{% block head_title %}- Sign Up{% endblock head_title %}
 
-{% block content %}
+{% block base_content %}
 <main class="max-w-7xl mx-auto mt-10 lg:mt-20">
   <div class="flex flex-col items-center lg:flex-row lg:items-start space-y-6">
 
@@ -35,16 +36,28 @@
                 </div>
               </div>
 
-              <div>
+              <div class="space-y-2">
                 <label for="{{ form.password1.id_for_label }}" class="sr-only">Password</label>
+                  {% if form.password1.errors %}
+                    <div class="error [&>ul]:space-y-2">
+                      {{ form.password1.errors }}
+                    </div>
+                  {% endif %}
                 <div
                   class="form-field">
                     {% render_field form.password1 class="block text-black shadow-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-gray-300 text-sm bg-white" %}
                 </div>
+                <details class="text-sm rounded-md border border-gray-700 open:[&_svg]:rotate-90">
+                  <summary class="px-2 py-1 flex justify-between items-center list-none cursor-pointer bg-gray-700">
+                    <div>Password requirements</div>
+                    <span>{% include "svgs/chevron.svg" with class="w-5 h-5" %}</span>
+                  </summary>
+                  <div class="px-2 py-1 mt-2 min-w-full [&>ul]:space-y-1 w-0">{{ form.password1.help_text | safe }}</div>
+                </details>
               </div>
 
               <div>
-                <label for="{{ form.password2.id_for_label }}" class="sr-only">Password</label>
+                <label for="{{ form.password2.id_for_label }}" class="sr-only">Password confirmation</label>
                 <div
                   class="form-field">
                     {% render_field form.password2 class="block text-black shadow-sm focus:outline-hidden focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 border-gray-300 text-sm bg-white" %}
@@ -64,9 +77,11 @@
               </div>
             </form>
 
-            {% if SOCIALACCOUNT_ENABLED %}
-              {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-            {% endif %}
+            <div class="space-y-4">
+              {% if SOCIALACCOUNT_ENABLED %}
+                {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+              {% endif %}
+            </div>
 
           </div>
         </div>
@@ -85,4 +100,4 @@
 
   </div>
 </main>
-{% endblock content %}
+{% endblock base_content %}
