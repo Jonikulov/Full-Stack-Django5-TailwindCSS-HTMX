@@ -1,17 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import (
-    CreateView,
-    ListView,
-    UpdateView,
-    DeleteView
-)
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
-from blog_app.models import Article
 from blog_app.forms import CreateArticleForm
+from blog_app.models import Article
+
 
 def home(request: HttpRequest) -> HttpResponse:
     articles = Article.objects.all()
@@ -25,11 +22,11 @@ def create_article(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             form_data = form.cleaned_data
             new_article = Article(
-                title = form_data["title"],
-                status = form_data["status"],
-                content = form_data["content"],
+                title=form_data["title"],
+                status=form_data["status"],
+                content=form_data["content"],
                 # word_count = form_data["word_count"],
-                twitter_post = form_data["twitter_post"],
+                twitter_post=form_data["twitter_post"],
             )
             new_article.save()
             return redirect("home")
@@ -50,12 +47,14 @@ def create_article(request: HttpRequest) -> HttpResponse:
         # Using .save() is cleaner than manual dictionary access, but it works
         # only for ModelForm -- `CreateArticleForm(forms.ModelForm)`
         article = form.save(commit=False)
-        article.creator = request.user 
+        article.creator = request.user
         article.save()
         return redirect("home")
 
     # 3. Render the page
     return render(request, "blog_app/article_create.html", {"form": form})
+
+
 # -----------------------------------------------------------------------------
 
 
@@ -65,9 +64,7 @@ class ArticlesListView(LoginRequiredMixin, ListView):
     context_object_name = "articles"
 
     def get_queryset(self):
-        return Article.objects.filter(
-            creator=self.request.user
-        ).order_by("-created_at")
+        return Article.objects.filter(creator=self.request.user).order_by("-created_at")
 
 
 # class based view
@@ -98,6 +95,7 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Article
     fields = ["title", "status", "content", "twitter_post"]
     success_url = reverse_lazy("home")
+    success_message = "Article deleted successfully." # TODO: ???
     context_object_name = "article"
 
     def test_func(self):
