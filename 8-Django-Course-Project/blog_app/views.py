@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -62,9 +63,14 @@ class ArticlesListView(LoginRequiredMixin, ListView):
     template_name = "blog_app/home.html"
     model = Article
     context_object_name = "articles"
+    paginate_by = 5
 
-    def get_queryset(self):
-        return Article.objects.filter(creator=self.request.user).order_by("-created_at")
+    def get_queryset(self) -> QuerySet:
+        search = self.request.GET.get("search")
+        queryset = super().get_queryset().filter(creator=self.request.user)
+        if search:
+            queryset = queryset.filter(title__search=search)
+        return queryset.order_by("-created_at")
 
 
 # class based view
@@ -95,8 +101,13 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Article
     fields = ["title", "status", "content", "twitter_post"]
     success_url = reverse_lazy("home")
-    success_message = "Article deleted successfully." # TODO: ???
+    success_message = "Article deleted successfully."
     context_object_name = "article"
 
     def test_func(self):
         return self.request.user == self.get_object().creator
+
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        messages.success(request, self.success_message, extra_tags="destructive")
+        return self.delete(request, *args, **kwargs)
+        # return super().post(request, *args, **kwargs)
