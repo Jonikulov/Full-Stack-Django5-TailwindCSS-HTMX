@@ -1,3 +1,5 @@
+import time
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -59,13 +61,14 @@ def create_article(request: HttpRequest) -> HttpResponse:
 # -----------------------------------------------------------------------------
 
 
-class ArticlesListView(LoginRequiredMixin, ListView):
+class ArticleListView(LoginRequiredMixin, ListView):
     template_name = "blog_app/home.html"
     model = Article
     context_object_name = "articles"
     paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
+        time.sleep(2)  # TODO: temp-dev
         search = self.request.GET.get("search")
         queryset = super().get_queryset().filter(creator=self.request.user)
         if search:
@@ -111,3 +114,7 @@ class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         messages.success(request, self.success_message, extra_tags="destructive")
         return self.delete(request, *args, **kwargs)
         # return super().post(request, *args, **kwargs)
+
+
+# class ArticleResultsView(ArticleListView):
+#     template_name = "blog_app/article_results.html"
