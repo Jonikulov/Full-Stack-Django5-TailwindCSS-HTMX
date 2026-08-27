@@ -2,6 +2,7 @@ from django import forms
 
 from blog_app.models import Article
 
+
 class _CreateArticleForm(forms.ModelForm):
     class Meta:
         model = Article

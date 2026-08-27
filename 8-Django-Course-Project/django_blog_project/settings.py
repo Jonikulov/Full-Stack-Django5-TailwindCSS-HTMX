@@ -41,7 +41,6 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 AUTHENTICATION_BACKENDS = [
     # # Needed to login by username in Django admin, regardless of `allauth`
     # "django.contrib.auth.backends.ModelBackend",
-
     "allauth.account.auth_backends.AuthenticationBackend"
 ]
 
@@ -70,6 +69,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount.providers.github",
     "django_browser_reload",
     "widget_tweaks",
+    "anymail",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
@@ -82,7 +82,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
     "allauth.account.middleware.AccountMiddleware",
     "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
@@ -92,6 +91,7 @@ if DEBUG:
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
 
     import re, socket
+
     hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
     docker_ips = [re.sub(r"\.\d+$", ".1", ip) for ip in ips]
     INTERNAL_IPS = ["127.0.0.1"] + docker_ips
@@ -123,9 +123,7 @@ WSGI_APPLICATION = "django_blog_project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    "default": env.db("DATABASE_URL", default="sqlite:///db.sqlite3")
-}
+DATABASES = {"default": env.db("DATABASE_URL", default="sqlite:///db.sqlite3")}
 DATABASES["default"]["CONN_MAX_AGE"] = env("CONN_MAX_AGE")
 # DATABASES["default"]["CONN_HEALTH_CHECKS"] = env("CONN_HEALTH_CHECKS")
 
@@ -142,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
         "OPTIONS": {
             "user_attributes": ("username", "email", "first_name", "last_name"),
             "max_similarity": 0.7,
-        }
+        },
     },
     {
         # Checks whether the password meets a minimum length
@@ -158,6 +156,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+DEFAULT_FROM_EMAIL = env("MAILGUN_FROM_EMAIL")
+ANYMAIL = {
+    "MAILGUN_API_KEY": env("MAILGUN_API_KEY"),
+    "SEND_DEFAULTS": {"tags": ["DjangoBlogProject"]},
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+
+
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "account_login"
 
@@ -167,8 +173,9 @@ ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_UNIQUE_EMAIL = True
 # ACCOUNT_EMAIL_REQUIRED = True  # Deprecated
 # ACCOUNT_USERNAME_REQUIRED = False  # Deprecated
-ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
-ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
+ACCOUNT_EMAIL_VERIFICATION = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 
 # Internationalization
@@ -182,9 +189,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOCALE_PATHS = [
-    BASE_DIR / "locale"
-]
+LOCALE_PATHS = [BASE_DIR / "locale"]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/

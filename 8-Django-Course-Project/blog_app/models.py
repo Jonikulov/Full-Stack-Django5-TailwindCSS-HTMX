@@ -14,6 +14,7 @@ ARTICLE_STATUSES = (
     ("published", "published"),
 )
 
+
 class UserProfile(AbstractUser):
     email = models.EmailField(_("email address"), max_length=255, unique=True)
     objects = UserProfileManager()
@@ -26,15 +27,13 @@ class UserProfile(AbstractUser):
     @property
     def article_count(self):
         return self.articles.count()
-    
+
     @property
     def written_words(self):
-        return self.articles.aggregate(models.Sum("word_count")) \
-            ["word_count__sum"] or 0
+        return self.articles.aggregate(models.Sum("word_count"))["word_count__sum"] or 0
 
 
 class Article(models.Model):
-
     class Meta:
         verbose_name = _("Article")
         verbose_name_plural = _("Articles")
@@ -44,10 +43,7 @@ class Article(models.Model):
     word_count = models.IntegerField(_("word count"), blank=True, default="")
     twitter_post = models.TextField(_("twitter post"), blank=True, default="")
     status = models.CharField(
-        _("status"),
-        max_length=20,
-        choices=ARTICLE_STATUSES,
-        default="draft"
+        _("status"), max_length=20, choices=ARTICLE_STATUSES, default="draft"
     )
     # auto_now_add - only executes once on INSERT, first creation only
     created_at = models.DateTimeField(_("created at"), auto_now_add=True)
@@ -57,7 +53,7 @@ class Article(models.Model):
         settings.AUTH_USER_MODEL,
         verbose_name=_("creator"),
         on_delete=models.CASCADE,
-        related_name="articles"
+        related_name="articles",
     )
 
     def save(self, *args, **kwargs):

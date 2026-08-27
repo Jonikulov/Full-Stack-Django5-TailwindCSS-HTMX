@@ -4,25 +4,22 @@ from django.contrib.auth import get_user_model
 from django.db import migrations
 from django.utils import timezone
 
-def create_superuser(apps, schema_editor):
-    User = get_user_model()
-    if User.objects.exists():
-        return
-    superuser = User.objects.create_superuser(
-        username="example_username",
-        email="superuser@example.com",
-        password="example_password",
-        last_login=timezone.now(),
-    )
-    superuser.save()
-
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('blog_app', '0001_initial'),
+        ("blog_app", "0001_initial"),
     ]
 
-    operations = [
-        migrations.RunPython(create_superuser)
-    ]
+    def create_superuser(apps, schema_editor):
+        User = get_user_model()
+        if User.objects.exists():
+            return
+        superuser = User.objects.create_superuser(
+            username="example_username",
+            email="superuser@example.com",
+            password="example_password",
+            last_login=timezone.now(),
+        )
+        superuser.save()
+
+    operations = [migrations.RunPython(create_superuser)]

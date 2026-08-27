@@ -68,7 +68,7 @@ class ArticleListView(LoginRequiredMixin, ListView):
     paginate_by = 5
 
     def get_queryset(self) -> QuerySet:
-        time.sleep(2)  # TODO: temp-dev
+        # time.sleep(1)  # TODO: temp-dev
         search = self.request.GET.get("search")
         queryset = super().get_queryset().filter(creator=self.request.user)
         if search:
