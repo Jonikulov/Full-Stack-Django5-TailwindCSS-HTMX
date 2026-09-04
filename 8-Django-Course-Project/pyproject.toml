@@ -10,7 +10,9 @@ dependencies = [
     "django-anymail[mailgun]>=15.1",
     "django-environ>=0.13.0",
     "django-widget-tweaks>=1.5.1",
+    "gunicorn>=26.2.0",
     "psycopg[binary]>=3.3.3",
+    "whitenoise[brotli]>=6.12.0",
 ]
 
 [dependency-groups]
