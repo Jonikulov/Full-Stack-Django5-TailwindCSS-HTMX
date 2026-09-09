@@ -210,6 +210,7 @@ __marimo__/
 
 # Node/Tailwind build files (if local)
 node_modules/
-static/blog_app/css/output.css
+# */static/blog_app/css/output.css
+
 # Django collected static files
 staticfiles/

@@ -12,7 +12,7 @@ services:
       - ./static_src:/app/static_src
       - ./templates:/app/templates
       - ./static/blog_app/css:/app/static/blog_app/css
-    command: npx tailwindcss -i static_src/blog_app/input.css -o static/blog_app/css/output.css --watch
+    command: npx tailwindcss -i static_src/blog_app/input.css -o static/blog_app/css/output.css --watch=always --poll
     develop:
       watch:
         - action: rebuild
