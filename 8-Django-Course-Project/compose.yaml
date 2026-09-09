@@ -1,5 +1,25 @@
 name: django-blog-project
 services:
+
+  tailwind:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend
+    profiles: ["dev"]
+    user: node
+    volumes:
+      - ./static_src:/app/static_src
+      - ./templates:/app/templates
+      - ./static/blog_app/css:/app/static/blog_app/css
+    command: npx tailwindcss -i static_src/blog_app/input.css -o static/blog_app/css/output.css --watch
+    develop:
+      watch:
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: package-lock.json
+
   db:
     image: postgres:18-trixie
     env_file:
@@ -12,10 +32,12 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+
   web:
     build:
       context: .
       dockerfile: Dockerfile
+      target: final
     image: django_blog_web
     init: true
     ports:
@@ -23,14 +45,13 @@ services:
     volumes:
       - .:/app
       - /app/.venv  # anonymous volume: keeps the container's own venv, not your host's
-      - /app/staticfiles    # shields the image's staticfiles dir
+      - /app/staticfiles    # keeps the image's own staticfiles dir
     env_file:
       - ./.env
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
-
     develop:  # development mode only
       watch:
         # Sync code changes instantly
@@ -46,3 +67,10 @@ services:
 
 volumes:
   postgres_data:
+
+
+# ----------------------------------------------------------------------------
+# Dev/Local:
+  # docker compose --profile dev up --build --watch
+# Prod:
+  # docker compose up -d --build

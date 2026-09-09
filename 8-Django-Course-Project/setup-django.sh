@@ -17,10 +17,19 @@ python manage.py migrate --noinput
 # Start the actual web server
 echo "Starting web server..."
 
-if [[ "$ENV_STATE" == "production" ]]; then
-    gunicorn django_blog_project.wsgi --workers $GUNICORN_WORKERS --forwarded-allow-ips "*"
-else
-    python manage.py runserver 0.0.0.0:8000
-fi
+case "$ENV_STATE" in
+    prod)
+        exec gunicorn django_blog_project.wsgi \
+            --workers "$GUNICORN_WORKERS" \
+            --forwarded-allow-ips "*"
+        ;;
+    dev)
+        exec python manage.py runserver 0.0.0.0:8000
+        ;;
+    *)
+        echo "FATAL: ENV_STATE must be 'prod' or 'dev' — got '${ENV_STATE:-<unset>}'. Check that .env exists and is loaded." >&2
+        exit 1
+        ;;
+esac
 
 exec "$@"  # executes whatever CMD (or runtime override)

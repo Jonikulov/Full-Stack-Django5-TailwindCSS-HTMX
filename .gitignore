@@ -2,6 +2,7 @@
 __pycache__/
 *.py[codz]
 *$py.class
+*.pyc
 
 # C extensions
 *.so
@@ -136,6 +137,7 @@ celerybeat.pid
 
 # Environments
 *.env
+*.env.*
 .envrc
 .venv
 env/
@@ -208,6 +210,6 @@ __marimo__/
 
 # Node/Tailwind build files (if local)
 node_modules/
-
+static/blog_app/css/output.css
 # Django collected static files
 staticfiles/

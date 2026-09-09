@@ -42,10 +42,20 @@ ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 ADMIN_URL = env("ADMIN_URL", default="admin")
 
-if ENV_STATE == "production":
+if ENV_STATE == "prod":
+    DEBUG = False
     # Security settings
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 3600  # 1 hour, raise later once confident
+
+# Deliberately deferred, not forgotten — revisit once HTTPS has been
+# stable across the whole domain for a while:
+#   W005: SECURE_HSTS_INCLUDE_SUBDOMAINS — commits every future subdomain to HTTPS-only
+#   W021: SECURE_HSTS_PRELOAD — near-permanent browser-level commitment
+SILENCED_SYSTEM_CHECKS = ["security.W005", "security.W021"]
 
 AUTHENTICATION_BACKENDS = [
     # # Needed to login by username in Django admin, regardless of `allauth`
@@ -180,13 +190,13 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "account_login"
 
 # AllAuth Settings
-# ACCOUNT_AUTHENTICATION_METHOD = "email"  # Deprecated
+# ACCOUNT_AUTHENTICATION_METHOD = "email"  # deprecated
 ACCOUNT_LOGIN_METHODS = {"email"}
 ACCOUNT_UNIQUE_EMAIL = True
-# ACCOUNT_EMAIL_REQUIRED = True  # Deprecated
-# ACCOUNT_USERNAME_REQUIRED = False  # Deprecated
+# ACCOUNT_EMAIL_REQUIRED = True  # deprecated
+# ACCOUNT_USERNAME_REQUIRED = False  # deprecated
 ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
-ACCOUNT_EMAIL_VERIFICATION = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
 # ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False  # deprecated
 
 
@@ -207,10 +217,8 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"  # for collectstatic
 
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
@@ -227,4 +235,18 @@ SOCIALACCOUNT_PROVIDERS = {
             "secret": env("GITHUB_CLIENT_SECRET", default=""),
         }
     }
+}
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {"console": {"class": "logging.StreamHandler"}},
+    "root": {"handlers": ["console"], "level": "INFO"},
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
 }

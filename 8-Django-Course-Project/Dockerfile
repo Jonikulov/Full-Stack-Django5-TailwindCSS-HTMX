@@ -1,10 +1,24 @@
-# --------------- Stage 1: Build ---------------
+# =============== Stage 1: Frontend (Tailwind) build ===============
+FROM node:24.20-trixie-slim AS frontend
+WORKDIR /app
+# Install dependencies first for Docker layer caching
+COPY package.json package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
+# Copy only the source files Tailwind needs to scan (HTML templates and input CSS)
+COPY static_src/ ./static_src/
+COPY templates/ ./templates/
+# Compile the CSS
+RUN npx tailwindcss -i ./static_src/blog_app/input.css -o ./static/blog_app/css/output.css --minify
+
+# =============== Stage 2: Build (Python) deps ===============
 FROM python:3.13-slim-trixie AS builder
 
 # System deps
 RUN apt-get update && \
     apt-get install -y --no-install-recommends gettext && \
     rm -rf /var/lib/apt/lists/*
+
 # Install uv binary
 COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /bin/
 
@@ -28,12 +42,14 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy the rest of the project & sync & install them
 COPY . /app
+# Copy (overwrite) the frontend (tailwind) build
+COPY --from=frontend /app/static/blog_app/css/output.css /app/static/blog_app/css/output.css
+
 RUN --mount=type=cache,target=/root/.cache/uv \
     # uv sync --locked --no-default-groups
     uv sync --locked
 
-
-# --------------- Stage 2: Production ---------------
+# =============== Stage 3: Production ===============
 FROM python:3.13-slim-trixie AS final
 
 # System deps & delete everything not needed
@@ -55,11 +71,9 @@ RUN mkdir -p /app/staticfiles && \
     chown -R django:django /app/staticfiles && \
     chmod -R 755 /app/staticfiles && \
     chmod +x /app/setup-django.sh
-# RUN chmod +x /app/setup-django.sh
 
 WORKDIR /app
 USER django
 
 EXPOSE 8000
 ENTRYPOINT [ "/app/setup-django.sh" ]
-# CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

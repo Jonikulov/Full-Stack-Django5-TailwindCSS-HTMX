@@ -1,8 +1,9 @@
 # Full Stack Web Development with Django 5, TailwindCSS, HTMX
 
 ### TODO & TASKS:
-* [ ] DEBUG=False mode isn't showing/working properly for staticfiles (e.g. admin page): need to be added `WhiteNoise` OR `Nginx / CDN`.
-* [ ]
+* [x] DEBUG=False mode isn't showing/working properly for staticfiles (e.g. admin page): need to be added `WhiteNoise` OR `Nginx / CDN`.
+* [>] AND NOW, I'M GOING TO DEPLOY IT TO MY custom domain (it's actuall subdomain like this: `blog.mydomain.uz`) -- on MY LOCAL LINUX PC (with docker  container or ideally compose)???
+
 ---
 
 * NOTE: although the course taught `django v5`, this repo used `django v6.0.3`, look for `pyproject.toml` for more about packages & dependencies.

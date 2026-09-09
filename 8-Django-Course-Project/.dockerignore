@@ -10,12 +10,16 @@ __pycache__
 
 # Virtual Environments
 *.env
+*.env.*
+!.env.example
 .venv
 env/
 venv/
 .python-version
 
 *.sqlite3
-# staticfiles/
+node_modules/
+static/blog_app/css/output.css
+staticfiles/
 
 # Dev Tools

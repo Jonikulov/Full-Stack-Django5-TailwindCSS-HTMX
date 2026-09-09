@@ -2,8 +2,8 @@
 @plugin "@tailwindcss/forms";
 @plugin "@tailwindcss/typography";
 
-/* @source "../../../templates";
-@source "../../../static"; */
+@source "../../../templates";
+@source "../../../static_src";
 
 @theme {
   --shadow-underline: inset 0 -2px 0 0;
