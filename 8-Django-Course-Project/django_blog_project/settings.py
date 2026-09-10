@@ -45,11 +45,11 @@ ADMIN_URL = env("ADMIN_URL", default="admin")
 if ENV_STATE == "prod":
     DEBUG = False
     # Security settings
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 3600  # 1 hour, raise later once confident
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
 
 # Deliberately deferred, not forgotten — revisit once HTTPS has been
 # stable across the whole domain for a while:

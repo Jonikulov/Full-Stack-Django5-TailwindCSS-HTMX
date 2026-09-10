@@ -19,7 +19,8 @@ echo "Starting web server..."
 
 case "$ENV_STATE" in
     prod)
-        exec gunicorn django_blog_project.wsgi \
+        exec gunicorn django_blog_project.wsgi:application \
+            --bind 0.0.0.0:8000 \
             --workers "$GUNICORN_WORKERS" \
             --forwarded-allow-ips "*"
         ;;

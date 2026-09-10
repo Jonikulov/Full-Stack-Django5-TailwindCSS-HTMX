@@ -9,7 +9,7 @@ RUN --mount=type=cache,target=/root/.npm \
 COPY static_src/ ./static_src/
 COPY templates/ ./templates/
 # Compile the CSS
-RUN npx tailwindcss -i ./static_src/blog_app/input.css -o ./static/blog_app/css/output.css --minify
+RUN npx tailwindcss -i static_src/blog_app/input.css -o static/blog_app/css/output.css --minify
 
 # =============== Stage 2: Build (Python) deps ===============
 FROM python:3.13-slim-trixie AS builder

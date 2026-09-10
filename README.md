@@ -2,7 +2,22 @@
 
 ### TODO & TASKS:
 * [x] DEBUG=False mode isn't showing/working properly for staticfiles (e.g. admin page): need to be added `WhiteNoise` OR `Nginx / CDN`.
-* [>] AND NOW, I'M GOING TO DEPLOY IT TO MY custom domain (it's actuall subdomain like this: `blog.mydomain.uz`) -- on MY LOCAL LINUX PC (with docker  container or ideally compose)???
+* [x] Running the app with compose:  # **SOLUTION: it's about HTTP`S` issue... (look for security settings in `settings.py`)**
+    * ENV_STATE=`prod`:
+        * debug=True:
+            * `docker compose up --build`:: -- APP NOT LOADED (not shown in browser or anywhere although compose services up & running).
+            * `docker compose --profile dev up --build`:: -- APP NOT LOADED (not shown in browser or anywhere although compose services up & running).
+        * debug=False:
+            * `docker compose up --build`:: -- same as APP NOT LOADED (...)
+            * `docker compose --profile dev up --build`:: -- same as APP NOT LOADED (...)
+    * ENV_STATE=`dev`:
+        * debug=True:
+            * `docker compose up --build`:: -- working (only supports HTTP and not 'S')
+            * `docker compose --profile dev up --build`:: -- working (only supports HTTP and not 'S')
+        * debug=False:
+            * `docker compose up --build`:: -- working (only supports HTTP and not 'S')
+            * `docker compose --profile dev up --build`:: -- working (only supports HTTP and not 'S')
+* > [>] AND NOW, I'M GOING TO DEPLOY IT TO MY custom domain (it's actuall subdomain like this: `https://blog.mydomain.uz`) -- on MY LOCAL LINUX PC (with docker  container or ideally compose)???
 
 ---
 
