@@ -65,6 +65,7 @@ services:
         - action: rebuild
           path: pyproject.toml
 
+
 volumes:
   postgres_data:
 

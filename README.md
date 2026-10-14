@@ -1,23 +1,72 @@
 # Full Stack Web Development with Django 5, TailwindCSS, HTMX
 
 ### TODO & TASKS:
-* [x] DEBUG=False mode isn't showing/working properly for staticfiles (e.g. admin page): need to be added `WhiteNoise` OR `Nginx / CDN`.
-* [x] Running the app with compose:  # **SOLUTION: it's about HTTP`S` issue... (look for security settings in `settings.py`)**
-    * ENV_STATE=`prod`:
-        * debug=True:
-            * `docker compose up --build`:: -- APP NOT LOADED (not shown in browser or anywhere although compose services up & running).
-            * `docker compose --profile dev up --build`:: -- APP NOT LOADED (not shown in browser or anywhere although compose services up & running).
-        * debug=False:
-            * `docker compose up --build`:: -- same as APP NOT LOADED (...)
-            * `docker compose --profile dev up --build`:: -- same as APP NOT LOADED (...)
-    * ENV_STATE=`dev`:
-        * debug=True:
-            * `docker compose up --build`:: -- working (only supports HTTP and not 'S')
-            * `docker compose --profile dev up --build`:: -- working (only supports HTTP and not 'S')
-        * debug=False:
-            * `docker compose up --build`:: -- working (only supports HTTP and not 'S')
-            * `docker compose --profile dev up --build`:: -- working (only supports HTTP and not 'S')
-* > [>] AND NOW, I'M GOING TO DEPLOY IT TO MY custom domain (it's actuall subdomain like this: `https://blog.mydomain.uz`) -- on MY LOCAL LINUX PC (with docker  container or ideally compose)???
+
+* [o] well, then show me to: how to configure cloudlfare
+* [o] now the issue is, my VPS (linx server) got multiple interfaces (lan-1, lan-2, global, internet, tailscale, vpn, etc...) -- how to configure ufw so that it opens the necessary 443 port on all interfaces at once? Or is it configured for each interface one by one?
+
+
+* > [>] My nginx version: nginx/1.30.4
+    * -> **VPS depoyment:**
+        ```
+        /etc/dev/
+        ├── gateway/                   <-- Central Gateway Stack
+        │   ├── compose.yaml           <-- Runs Nginx & Certbot
+        │   └── nginx/
+        │       └── conf.d/            <-- Contains all site .conf files
+        │
+        ├── my-blog-app/              <-- Blog Stack
+        │   └── compose.yaml           <-- Runs Django & Postgres
+        └── my-shop-api/              <-- Shop Stack
+            └── compose.yaml           <-- Runs FastAPI & Redis
+        ```
+    -------
+    * ```Worth knowing: Docker writes its own iptables rules and can bypass ufw for published ports. Don't rely on ufw alone to keep something private — the real protection below is that only nginx publishes ports at all.``` --  what the?! HOW THE HECK I KNOW what ports & services are open/running in VPS??? Or I mean, can't tell whether docker is opening & using any port without telling me?!
+    * Does nginx handle multiple conf files in conf.d or should I write them into one?
+    * I might 5-10 (or sometimtes even more!) websites/apps/containers/domains/APIs/services & etc...???
+    * Using nginx as web server, reverse proxy, API gateway & even load balancer!?
+    * Using NGINX with or within docker compose -- properly & professionally?
+    * NGINX: make port 80 is only redirect -> to 443 (tls -> HTTP`S`), so https://my-app.com/api/get-users -> will work fine (might return json or so), but http version of it won't (give the response or any data) & might redirect to https page instead!
+
+    * But how supposed to use nginx when I'm running & deploying all apps & services in docker (compose)? Doesn't multiple nginx containers/services from different apps/composes/dockerfiles -- run at the same time &/ conflict? I mean, using nginx in docker without manually installing or configuring nginx but via docker? How to save & persist nginx then...
+    * I have zero knowledge of nginx & using & configuring it, confused by it?! (and also using/configuring it with compose!)
+    * which nginx (stable) image to use (& why)?
+        * -> **`nginx:1.30-alpine`**
+        - alpine-otel
+        - alpine-perl
+        - alpine-slim
+        - alpine
+        - debian-otel
+        - debian-perl
+        - debian
+        - trixie-otel
+        - trixie-perl
+        - trixie-slim
+        - trixie
+        - ???
+    - nginx:1.30-trixie
+
+
+
+* CURRENT config of VPS in /etc/ssh/sshd_config >>>
+    ```
+    PermitRootLogin prohibit-password
+    #PasswordAuthentication yes
+    ```
+    ???
+    So that I can conveniently login to that from my host linux like this: $ `ssh private-server`, and why you're saying this?!
+    ```# /etc/ssh/sshd_config
+    PasswordAuthentication no
+    PermitRootLogin no```???
+* Deploying web app to VPS (custom domain + cloudflare dns only + nginx web server): unfortunately ports 443 & 80 will be open to public, but in that vps 22 is also open for ssh??? That's the thing makes concerning?
+* Should I change ssh service port from default 22 to something random like 8443?
+* But why ssh root access should be disabled... What's the difference hackers easily become root with the password of any user in linux with a command like sudo su --- once they found the user password?
+
+* what does it look like & usage & working: making docker client in my personal PC and docker server in VPS? so that I can control docker containers in my PC or it would be better to use/work via ssh (e.g. tmux) in VPS instead?
+    * **ANSWER:** The strongest version of this, though, is neither: don't build on the VPS at all. Build images in CI (GitHub Actions etc.), push to a registry, and have the VPS only ever docker compose pull && docker compose up -d. That sidesteps the build-context upload problem entirely, gives you versioned artifacts you can roll back to, and means the VPS needs no source code on it at all — which leads directly into your second question.
+
+* Setup NGINX web server -> docker.
+* Learn: Docker (compose) Secrets/Credentials
 
 ---
 
